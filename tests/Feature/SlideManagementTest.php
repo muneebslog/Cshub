@@ -96,11 +96,13 @@ test('teacher can update and delete a slide', function () {
         ->call('update')
         ->assertHasNoErrors();
 
-    expect($slide->fresh())
+    $fresh = $slide->fresh();
+
+    expect($fresh)
         ->title->toBe('New Title')
         ->category_id->toBe($category->id)
-        ->sort_order->toBe(5)
-        ->and($slide->fresh()->lesson_date?->toDateString())->toBe('2026-02-20');
+        ->sort_order->toBe(5);
+    expect($fresh?->lesson_date?->toDateString())->toBe('2026-02-20');
 
     $path = $slide->file_path;
 

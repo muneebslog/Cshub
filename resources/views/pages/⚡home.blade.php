@@ -315,7 +315,7 @@ new #[Layout('layouts::public')] #[Title('Course Library')] class extends Compon
                         <div class="grid grid-cols-[minmax(0,1fr)_7rem_8rem] gap-2 border-b border-ink/10 bg-paper/80 px-3 py-2 text-[11px] font-bold tracking-wide text-ink-soft uppercase sm:grid-cols-[minmax(0,1fr)_9rem_8rem_7rem]">
                             <span>{{ __('Name') }}</span>
                             <span class="hidden sm:block">{{ __('Module') }}</span>
-                            <span>{{ __('Date added') }}</span>
+                            <span>{{ __('Lesson date') }}</span>
                             <span class="text-end">{{ __('Open') }}</span>
                         </div>
                         <ul class="divide-y divide-ink/5">

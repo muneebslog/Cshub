@@ -34,7 +34,7 @@ test('guests can switch explorer view modes', function () {
     Livewire::test('pages::home')
         ->call('setView', 'details')
         ->assertSet('view', 'details')
-        ->assertSee('Date added')
+        ->assertSee('Lesson date')
         ->assertSee('Lesson Alpha');
 });
 
