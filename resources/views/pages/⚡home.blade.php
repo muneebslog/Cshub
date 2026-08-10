@@ -63,6 +63,7 @@ new #[Layout('layouts::public')] #[Title('Course Library')] class extends Compon
                 $query->whereHas('category', fn (Builder $categoryQuery) => $categoryQuery->where('slug', $this->category));
             })
             ->orderBy('sort_order')
+            ->orderByDesc('lesson_date')
             ->orderByDesc('created_at')
             ->get();
     }
@@ -303,7 +304,7 @@ new #[Layout('layouts::public')] #[Title('Course Library')] class extends Compon
                                         {{ $slide->title }}
                                     </span>
                                     <span class="mt-1 text-[11px] text-ink-soft">
-                                        {{ $slide->created_at?->timezone(config('app.timezone'))->format('M j, Y') }}
+                                        {{ $slide->lesson_date?->timezone(config('app.timezone'))->format('M j, Y') }}
                                     </span>
                                 </a>
                             </li>
@@ -329,7 +330,7 @@ new #[Layout('layouts::public')] #[Title('Course Library')] class extends Compon
                                             {{ $slide->category?->name ?? __('Unfiled') }}
                                         </span>
                                         <span class="text-xs text-ink-soft">
-                                            {{ $slide->created_at?->timezone(config('app.timezone'))->format('M j, Y') }}
+                                            {{ $slide->lesson_date?->timezone(config('app.timezone'))->format('M j, Y') }}
                                         </span>
                                         <div class="flex justify-end gap-1">
                                             <a

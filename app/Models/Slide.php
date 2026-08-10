@@ -19,13 +19,14 @@ use Illuminate\Support\Str;
  * @property string $slug
  * @property string $file_path
  * @property string $original_filename
+ * @property Carbon|null $lesson_date
  * @property int $sort_order
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read User $user
  * @property-read Category|null $category
  */
-#[Fillable(['user_id', 'category_id', 'title', 'slug', 'file_path', 'original_filename', 'sort_order'])]
+#[Fillable(['user_id', 'category_id', 'title', 'slug', 'file_path', 'original_filename', 'lesson_date', 'sort_order'])]
 class Slide extends Model
 {
     /** @use HasFactory<SlideFactory> */
@@ -97,6 +98,7 @@ class Slide extends Model
     {
         return [
             'sort_order' => 'integer',
+            'lesson_date' => 'date',
         ];
     }
 }

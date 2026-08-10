@@ -26,6 +26,7 @@ class StoreSlideController extends Controller
             'title' => $request->validated('title'),
             'file_path' => $path,
             'original_filename' => $filename,
+            'lesson_date' => $request->validated('lesson_date'),
             'sort_order' => (int) Slide::query()->max('sort_order') + 1,
         ]);
 

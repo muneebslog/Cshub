@@ -16,6 +16,7 @@ test('real welcome html file content can be stored', function () {
     $this->actingAs($user)
         ->post(route('admin.slides.store'), [
             'title' => 'Computer Science Welcome',
+            'lesson_date' => '2026-08-10',
             'html_content' => $html,
             'original_filename' => 'Computer Science Welcome.html',
         ])

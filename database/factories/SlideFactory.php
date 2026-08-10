@@ -30,6 +30,7 @@ class SlideFactory extends Factory
             'slug' => Str::slug($title),
             'file_path' => 'slides/'.Str::uuid().'.html',
             'original_filename' => Str::slug($title).'.html',
+            'lesson_date' => fake()->date(),
             'sort_order' => fake()->numberBetween(0, 100),
         ];
     }

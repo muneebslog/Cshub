@@ -14,6 +14,8 @@ new class extends Component {
 
     public ?int $editCategoryId = null;
 
+    public string $editLessonDate = '';
+
     public int $editSortOrder = 0;
 
     /**
@@ -37,6 +39,7 @@ new class extends Component {
         return Slide::query()
             ->with('category')
             ->orderBy('sort_order')
+            ->orderByDesc('lesson_date')
             ->orderByDesc('created_at')
             ->get();
     }
@@ -48,12 +51,13 @@ new class extends Component {
         $this->editingId = $slide->id;
         $this->editTitle = $slide->title;
         $this->editCategoryId = $slide->category_id;
+        $this->editLessonDate = $slide->lesson_date?->toDateString() ?? now()->toDateString();
         $this->editSortOrder = $slide->sort_order;
     }
 
     public function cancelEditing(): void
     {
-        $this->reset('editingId', 'editTitle', 'editCategoryId', 'editSortOrder');
+        $this->reset('editingId', 'editTitle', 'editCategoryId', 'editLessonDate', 'editSortOrder');
     }
 
     public function update(): void
@@ -64,6 +68,7 @@ new class extends Component {
             'editingId' => ['required', 'integer', 'exists:slides,id'],
             'editTitle' => ['required', 'string', 'max:255'],
             'editCategoryId' => ['nullable', 'integer', 'exists:categories,id'],
+            'editLessonDate' => ['required', 'date'],
             'editSortOrder' => ['required', 'integer', 'min:0'],
         ]);
 
@@ -72,6 +77,7 @@ new class extends Component {
         $slide->update([
             'title' => $validated['editTitle'],
             'category_id' => $validated['editCategoryId'],
+            'lesson_date' => $validated['editLessonDate'],
             'sort_order' => $validated['editSortOrder'],
         ]);
 
@@ -128,7 +134,7 @@ new class extends Component {
                 <li class="explorer-row px-3 py-3 sm:px-4" wire:key="slide-{{ $slide->id }}">
                     @if ($editingId === $slide->id)
                         <form wire:submit="update" class="space-y-3 rounded-xl border border-moss/20 bg-moss/[0.04] p-3">
-                            <div class="grid gap-3 sm:grid-cols-3">
+                            <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                                 <flux:field>
                                     <flux:label>{{ __('Name') }}</flux:label>
                                     <flux:input wire:model="editTitle" type="text" required />
@@ -144,6 +150,12 @@ new class extends Component {
                                         @endforeach
                                     </flux:select>
                                     <flux:error name="editCategoryId" />
+                                </flux:field>
+
+                                <flux:field>
+                                    <flux:label>{{ __('Lesson date') }}</flux:label>
+                                    <flux:input wire:model="editLessonDate" type="date" required />
+                                    <flux:error name="editLessonDate" />
                                 </flux:field>
 
                                 <flux:field>
@@ -177,7 +189,7 @@ new class extends Component {
                                         @else
                                             <span class="rounded-full bg-ink/5 px-2 py-0.5">{{ __('Unfiled') }}</span>
                                         @endif
-                                        <span>{{ $slide->created_at?->toFormattedDateString() }}</span>
+                                        <span>{{ $slide->lesson_date?->toFormattedDateString() }}</span>
                                         <span class="tabular-nums">#{{ $slide->sort_order }}</span>
                                     </div>
                                 </div>

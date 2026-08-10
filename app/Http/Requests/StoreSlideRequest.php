@@ -24,6 +24,7 @@ class StoreSlideRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'category_id' => ['nullable', 'integer', 'exists:categories,id'],
+            'lesson_date' => ['required', 'date'],
             'html_content' => ['required', 'string', 'max:31457280'],
             'original_filename' => ['required', 'string', 'max:255'],
         ];
@@ -38,6 +39,7 @@ class StoreSlideRequest extends FormRequest
             'html_content.required' => __('Please choose an HTML lesson file.'),
             'html_content.max' => __('The HTML file may not be larger than 30MB.'),
             'original_filename.required' => __('Please choose an HTML lesson file.'),
+            'lesson_date.required' => __('Please choose the lesson date.'),
         ];
     }
 
@@ -57,6 +59,12 @@ class StoreSlideRequest extends FormRequest
     {
         if ($this->input('category_id') === '' || $this->input('category_id') === null) {
             $this->merge(['category_id' => null]);
+        }
+
+        if (blank($this->input('title')) && filled($this->input('original_filename'))) {
+            $this->merge([
+                'title' => pathinfo((string) $this->input('original_filename'), PATHINFO_FILENAME),
+            ]);
         }
     }
 }

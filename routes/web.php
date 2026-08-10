@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\SlideAdminController;
 use App\Http\Controllers\SlideFileController;
+use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\StoreSlideController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('admin/slides', [SlideAdminController::class, 'index'])->name('admin.slides');
     Route::post('admin/slides', StoreSlideController::class)->name('admin.slides.store');
+    Route::post('admin/categories', StoreCategoryController::class)->name('admin.categories.store');
     Route::livewire('admin/categories', 'pages::admin.categories')->name('admin.categories');
 });
 
