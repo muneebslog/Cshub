@@ -5,6 +5,7 @@ namespace App\Providers;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -46,5 +47,10 @@ class AppServiceProvider extends ServiceProvider
                 ->uncompromised()
             : null,
         );
+
+        // Keep signed URLs (Livewire uploads, etc.) valid when using localhost vs 127.0.0.1.
+        if (! $this->app->runningInConsole() && filled(request()->getSchemeAndHttpHost())) {
+            URL::forceRootUrl(request()->getSchemeAndHttpHost());
+        }
     }
 }

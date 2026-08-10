@@ -9,7 +9,23 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Outfit', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-display: 'Fraunces', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+
+    --color-ink: #14363a;
+    --color-ink-soft: #2a5559;
+    --color-paper: #f3f6f2;
+    --color-paper-deep: #e4ebe4;
+    --color-panel: #fbfdf9;
+    --color-moss: #1f6b5c;
+    --color-moss-bright: #2d8a76;
+    --color-folder: #d4a017;
+    --color-folder-deep: #b8860b;
+    --color-file: #3d7ea6;
+    --color-file-soft: #d7ebf5;
+    --color-accent: #1f6b5c;
+    --color-accent-content: #1f6b5c;
+    --color-accent-foreground: #ffffff;
 
     --color-zinc-50: #fafafa;
     --color-zinc-100: #f5f5f5;
@@ -22,10 +38,6 @@
     --color-zinc-800: #262626;
     --color-zinc-900: #171717;
     --color-zinc-950: #0a0a0a;
-
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
-    --color-accent-foreground: var(--color-white);
 }
 
 @layer theme {
@@ -37,13 +49,189 @@
 }
 
 @layer base {
-
     *,
     ::after,
     ::before,
     ::backdrop,
     ::file-selector-button {
         border-color: var(--color-gray-200, currentColor);
+    }
+
+    body {
+        font-family: var(--font-sans);
+    }
+}
+
+@layer components {
+    .campus-shell {
+        background:
+            radial-gradient(ellipse 80% 50% at 10% -10%, rgb(45 138 118 / 0.18), transparent 55%),
+            radial-gradient(ellipse 60% 40% at 100% 0%, rgb(61 126 166 / 0.12), transparent 50%),
+            linear-gradient(165deg, var(--color-paper) 0%, var(--color-paper-deep) 100%);
+    }
+
+    .campus-grid {
+        background-image:
+            linear-gradient(rgb(20 54 58 / 0.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgb(20 54 58 / 0.035) 1px, transparent 1px);
+        background-size: 24px 24px;
+    }
+
+    .teacher-desk {
+        background:
+            radial-gradient(ellipse 70% 45% at 90% -5%, rgb(212 160 23 / 0.14), transparent 50%),
+            radial-gradient(ellipse 55% 40% at 0% 0%, rgb(45 138 118 / 0.16), transparent 55%),
+            linear-gradient(165deg, var(--color-paper) 0%, #dfe8e2 100%);
+        color: var(--color-ink);
+        color-scheme: light;
+    }
+
+    /*
+     | Flux dark-mode utilities turn sidebar labels white; the desk stays light.
+     | Pin readable ink colors on campus chrome regardless of appearance setting.
+     */
+    .teacher-desk [data-flux-sidebar-item],
+    .teacher-desk [data-flux-sidebar-group] > button,
+    .teacher-desk [data-flux-sidebar-profile],
+    .teacher-desk [data-flux-sidebar-profile] span,
+    .teacher-desk [data-flux-sidebar-collapse],
+    .teacher-desk [data-flux-sidebar-toggle],
+    .teacher-desk [data-flux-profile] {
+        color: var(--color-ink) !important;
+    }
+
+    .teacher-desk [data-flux-sidebar-item] svg,
+    .teacher-desk [data-flux-sidebar-profile] svg,
+    .teacher-desk [data-flux-sidebar-collapse] svg,
+    .teacher-desk [data-flux-sidebar-toggle] svg,
+    .teacher-desk [data-flux-profile] svg {
+        color: var(--color-ink-soft) !important;
+    }
+
+    .teacher-desk [data-flux-sidebar-group] [class*='tracking'],
+    .teacher-desk [data-flux-sidebar] .text-xs,
+    .teacher-desk [data-flux-sidebar] [class*='uppercase'] {
+        color: var(--color-ink-soft) !important;
+    }
+
+    .campus-shell {
+        color-scheme: light;
+    }
+
+    .desk-panel {
+        @apply overflow-hidden rounded-2xl border border-ink/10 bg-panel shadow-[0_18px_40px_-24px_rgb(20_54_58_/_0.4),0_0_0_1px_rgb(255_255_255_/_0.55)_inset];
+    }
+
+    .desk-titlebar {
+        @apply flex items-center gap-3 border-b border-ink/10 bg-gradient-to-b from-white to-paper-deep/50 px-3 py-2.5;
+    }
+
+    .drop-zone {
+        @apply relative rounded-xl border-2 border-dashed border-moss/30 bg-moss/[0.04] transition;
+    }
+
+    .drop-zone:hover,
+    .drop-zone:focus-within {
+        @apply border-moss/55 bg-moss/[0.08];
+    }
+
+    .explorer-window {
+        @apply overflow-hidden rounded-2xl border border-ink/10 bg-panel shadow-[0_24px_60px_-28px_rgb(20_54_58_/_0.45),0_0_0_1px_rgb(255_255_255_/_0.5)_inset];
+    }
+
+    .explorer-titlebar {
+        @apply flex items-center gap-3 border-b border-ink/10 bg-gradient-to-b from-white to-paper-deep/60 px-3 py-2.5;
+    }
+
+    .explorer-traffic {
+        @apply flex items-center gap-1.5;
+    }
+
+    .explorer-traffic span {
+        @apply size-3 rounded-full shadow-inner;
+    }
+
+    .folder-glyph {
+        @apply relative inline-flex size-12 items-center justify-center;
+    }
+
+    .folder-glyph::before {
+        content: '';
+        position: absolute;
+        inset: 18% 8% 12%;
+        border-radius: 0.35rem 0.35rem 0.45rem 0.45rem;
+        background: linear-gradient(180deg, var(--color-folder) 0%, var(--color-folder-deep) 100%);
+        box-shadow: 0 4px 10px rgb(184 134 11 / 0.28);
+    }
+
+    .folder-glyph::after {
+        content: '';
+        position: absolute;
+        top: 14%;
+        left: 14%;
+        width: 38%;
+        height: 22%;
+        border-radius: 0.25rem 0.25rem 0 0;
+        background: linear-gradient(180deg, #efc65a, var(--color-folder));
+    }
+
+    .file-glyph {
+        @apply relative inline-flex size-12 items-center justify-center;
+    }
+
+    .file-glyph::before {
+        content: '';
+        position: absolute;
+        inset: 8% 18% 6%;
+        border-radius: 0.3rem;
+        background: linear-gradient(160deg, #fff 0%, var(--color-file-soft) 55%, #c5dff0 100%);
+        border: 1px solid rgb(61 126 166 / 0.35);
+        box-shadow: 0 6px 14px rgb(61 126 166 / 0.18);
+        clip-path: polygon(0 0, 68% 0, 100% 28%, 100% 100%, 0 100%);
+    }
+
+    .file-glyph::after {
+        content: 'HTML';
+        position: absolute;
+        bottom: 22%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.55rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        color: var(--color-file);
+        z-index: 1;
+    }
+
+    .explorer-row {
+        animation: explorer-rise 0.45s ease both;
+    }
+
+    .explorer-row:nth-child(1) { animation-delay: 0.02s; }
+    .explorer-row:nth-child(2) { animation-delay: 0.05s; }
+    .explorer-row:nth-child(3) { animation-delay: 0.08s; }
+    .explorer-row:nth-child(4) { animation-delay: 0.11s; }
+    .explorer-row:nth-child(5) { animation-delay: 0.14s; }
+    .explorer-row:nth-child(6) { animation-delay: 0.17s; }
+    .explorer-row:nth-child(7) { animation-delay: 0.2s; }
+    .explorer-row:nth-child(8) { animation-delay: 0.23s; }
+    .explorer-row:nth-child(n + 9) { animation-delay: 0.26s; }
+
+    @keyframes explorer-rise {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .explorer-row {
+            animation: none;
+        }
     }
 }
 
@@ -52,7 +240,7 @@
 }
 
 [data-flux-label] {
-    @apply  !mb-0 !leading-tight;
+    @apply !mb-0 !leading-tight;
 }
 
 input:focus[data-flux-control],
@@ -60,7 +248,3 @@ textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
-
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */

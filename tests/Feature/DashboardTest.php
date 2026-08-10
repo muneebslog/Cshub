@@ -7,10 +7,17 @@ test('guests are redirected to the login page', function () {
     $response->assertRedirect(route('login'));
 });
 
-test('authenticated users can visit the dashboard', function () {
+test('authenticated users are redirected to manage slides', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
     $response = $this->get(route('dashboard'));
-    $response->assertOk();
+    $response->assertRedirect(route('admin.slides'));
+});
+
+test('authenticated users can visit the slides manager', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $this->get(route('admin.slides'))->assertOk();
 });
